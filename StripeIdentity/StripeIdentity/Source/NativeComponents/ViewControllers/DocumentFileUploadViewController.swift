@@ -271,20 +271,20 @@ final class DocumentFileUploadViewController: IdentityFlowViewController {
             )
         }
 
-        if UIImagePickerController.isSourceTypeAvailable(.camera) {
-            alert.addAction(
-                .init(
-                    title: STPLocalizedString(
-                        "Take Photo",
-                        "When selected in an action sheet, opens the device's camera interface"
-                    ),
-                    style: .default,
-                    handler: { [weak self] _ in
-                        self?.takePhoto()
-                    }
-                )
-            )
-        }
+//        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+//            alert.addAction(
+//                .init(
+//                    title: STPLocalizedString(
+//                        "Take Photo",
+//                        "When selected in an action sheet, opens the device's camera interface"
+//                    ),
+//                    style: .default,
+//                    handler: { [weak self] _ in
+//                        self?.takePhoto()
+//                    }
+//                )
+//            )
+//        }
 
         if !requireLiveCapture {
             alert.addAction(
@@ -337,18 +337,18 @@ final class DocumentFileUploadViewController: IdentityFlowViewController {
                 return
             }
 
-            guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
-                self.sheetController?.analyticsClient.logGenericError(
-                    error: DocumentFileUploadViewControllerError.imagePickerSourceCameraUnavailable
-                )
-                return
-            }
-
-            let imagePicker = UIImagePickerController()
-            imagePicker.delegate = self
-            imagePicker.sourceType = .camera
-            imagePicker.allowsEditing = false
-            self.present(imagePicker, animated: true, completion: nil)
+//            guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
+//                self.sheetController?.analyticsClient.logGenericError(
+//                    error: DocumentFileUploadViewControllerError.imagePickerSourceCameraUnavailable
+//                )
+//                return
+//            }
+//
+//            let imagePicker = UIImagePickerController()
+//            imagePicker.delegate = self
+//            imagePicker.sourceType = .camera
+//            imagePicker.allowsEditing = false
+//            self.present(imagePicker, animated: true, completion: nil)
         }
     }
 
@@ -496,11 +496,11 @@ extension DocumentFileUploadViewController: UIImagePickerControllerDelegate {
             return picker.dismiss(animated: true, completion: nil)
         }
 
-        upload(
-            image: image,
-            for: side,
-            method: (picker.sourceType == .camera) ? .manualCapture : .fileUpload
-        )
+//        upload(
+//            image: image,
+//            for: side,
+//            method: (picker.sourceType == .camera) ? .manualCapture : .fileUpload
+//        )
         updateUI()
         picker.dismiss(animated: true) { [weak self] in
             // Set focus back onto the list item after the picker is dismissed

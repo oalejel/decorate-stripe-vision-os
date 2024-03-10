@@ -48,7 +48,7 @@ class STPCardScanner: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
 
     weak var cameraView: STPCameraView?
 
-    var feedbackGenerator: UINotificationFeedbackGenerator?
+//    var feedbackGenerator: UINotificationFeedbackGenerator?
 
     @objc public var deviceOrientation: UIDeviceOrientation {
         get {
@@ -63,27 +63,27 @@ class STPCardScanner: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
                 x: 0, y: CGFloat(0.3), width: 1, height: CGFloat(0.4))
 
             // iOS camera image data is returned in LandcapeLeft orientation by default. We'll flip it as needed:
-            switch newDeviceOrientation {
-            case .portraitUpsideDown:
-                videoOrientation = .portraitUpsideDown
-                textOrientation = .left
-                regionOfInterest = kSTPCardScanningScreenCenter
-            case .landscapeLeft:
-                videoOrientation = .landscapeRight
-                textOrientation = .up
-                regionOfInterest = CGRect(x: 0, y: 0, width: 1, height: 1)
-            case .landscapeRight:
-                videoOrientation = .landscapeLeft
-                textOrientation = .down
-                regionOfInterest = CGRect(x: 0, y: 0, width: 1, height: 1)
-            case .portrait, .faceUp, .faceDown, .unknown:
-                fallthrough
-            default:
-                videoOrientation = .portrait
-                textOrientation = .right
-                regionOfInterest = kSTPCardScanningScreenCenter
-            }
-            cameraView?.videoPreviewLayer.connection?.videoOrientation = videoOrientation
+//            switch newDeviceOrientation {
+//            case .portraitUpsideDown:
+//                videoOrientation = .portraitUpsideDown
+//                textOrientation = .left
+//                regionOfInterest = kSTPCardScanningScreenCenter
+//            case .landscapeLeft:
+//                videoOrientation = .landscapeRight
+//                textOrientation = .up
+//                regionOfInterest = CGRect(x: 0, y: 0, width: 1, height: 1)
+//            case .landscapeRight:
+//                videoOrientation = .landscapeLeft
+//                textOrientation = .down
+//                regionOfInterest = CGRect(x: 0, y: 0, width: 1, height: 1)
+//            case .portrait, .faceUp, .faceDown, .unknown:
+//                fallthrough
+//            default:
+//                videoOrientation = .portrait
+//                textOrientation = .right
+//                regionOfInterest = kSTPCardScanningScreenCenter
+//            }
+//            cameraView?.videoPreviewLayer.connection?.videoOrientation = videoOrientation
         }
     }
 
@@ -94,7 +94,7 @@ class STPCardScanner: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
         super.init()
         self.delegate = delegate
         captureSessionQueue = DispatchQueue(label: "com.stripe.CardScanning.CaptureSessionQueue")
-        deviceOrientation = UIDevice.current.orientation
+//        deviceOrientation = UIDevice.current.orientation
     }
 
     func start() {
@@ -106,25 +106,25 @@ class STPCardScanner: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
 
         isScanning = true
         timeoutTime = nil
-        feedbackGenerator = UINotificationFeedbackGenerator()
-        feedbackGenerator?.prepare()
+//        feedbackGenerator = UINotificationFeedbackGenerator()
+//        feedbackGenerator?.prepare()
 
-        captureSessionQueue?.async(execute: {
-            #if targetEnvironment(simulator)
-                // Camera not supported on Simulator
-                self.stopWithError(STPCardScanner.stp_cardScanningError())
-                return
-            #else
-                self.detectedNumbers = NSCountedSet()
-                self.detectedExpirations = NSCountedSet()
-                self.setupCamera()
-                DispatchQueue.main.async(execute: {
-                    self.cameraView?.captureSession = self.captureSession
-                    self.cameraView?.videoPreviewLayer.connection?.videoOrientation =
-                        self.videoOrientation
-                })
-            #endif
-        })
+//        captureSessionQueue?.async(execute: {
+//            #if targetEnvironment(simulator)
+//                // Camera not supported on Simulator
+//                self.stopWithError(STPCardScanner.stp_cardScanningError())
+//                return
+//            #else
+//                self.detectedNumbers = NSCountedSet()
+//                self.detectedExpirations = NSCountedSet()
+//                self.setupCamera()
+//                DispatchQueue.main.async(execute: {
+//                    self.cameraView?.captureSession = self.captureSession
+//                    self.cameraView?.videoPreviewLayer.connection?.videoOrientation =
+//                        self.videoOrientation
+//                })
+//            #endif
+//        })
     }
 
     func stop() {
@@ -149,7 +149,7 @@ class STPCardScanner: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
     }
 
     private var stp_deviceOrientation: UIDeviceOrientation!
-    private var videoOrientation: AVCaptureVideoOrientation!
+//    private var videoOrientation: AVCaptureVideoOrientation!
     private var textOrientation: CGImagePropertyOrientation!
     private var regionOfInterest = CGRect.zero
     private var detectedNumbers = NSCountedSet()
@@ -197,62 +197,62 @@ class STPCardScanner: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
             strongSelf?.processVNRequest(request)
         })
 
-        let captureDevice = AVCaptureDevice.default(
-            .builtInWideAngleCamera, for: .video, position: .back)
-        self.captureDevice = captureDevice
+//        let captureDevice = AVCaptureDevice.default(
+//            .builtInWideAngleCamera, for: .video, position: .back)
+//        self.captureDevice = captureDevice
+//
+//        captureSession = AVCaptureSession()
+//        captureSession?.sessionPreset = .hd1920x1080
 
-        captureSession = AVCaptureSession()
-        captureSession?.sessionPreset = .hd1920x1080
-
-        var deviceInput: AVCaptureDeviceInput?
-        do {
-            if let captureDevice = captureDevice {
-                deviceInput = try AVCaptureDeviceInput(device: captureDevice)
-            }
-        } catch {
-            stopWithError(STPCardScanner.stp_cardScanningError())
-            return
-        }
-
-        if let deviceInput = deviceInput {
-            if captureSession?.canAddInput(deviceInput) ?? false {
-                captureSession?.addInput(deviceInput)
-            } else {
-                stopWithError(STPCardScanner.stp_cardScanningError())
-                return
-            }
-        }
-
-        videoDataOutputQueue = DispatchQueue(label: "com.stripe.CardScanning.VideoDataOutputQueue")
-        videoDataOutput = AVCaptureVideoDataOutput()
-        videoDataOutput?.alwaysDiscardsLateVideoFrames = true
-        videoDataOutput?.setSampleBufferDelegate(self, queue: videoDataOutputQueue)
-
-        // This is the recommended pixel buffer format for Vision:
-        videoDataOutput?.videoSettings = [
-            kCVPixelBufferPixelFormatTypeKey as String:
-                kCVPixelFormatType_420YpCbCr8BiPlanarFullRange,
-        ]
-
-        if let videoDataOutput = videoDataOutput {
-            if captureSession?.canAddOutput(videoDataOutput) ?? false {
-                captureSession?.addOutput(videoDataOutput)
-            } else {
-                stopWithError(STPCardScanner.stp_cardScanningError())
-                return
-            }
-        }
-
-        // This improves recognition quality, but means the VideoDataOutput buffers won't match what we're seeing on screen.
-        videoDataOutput?.connection(with: .video)?.preferredVideoStabilizationMode = .auto
-
-        captureSession?.startRunning()
-
-        do {
-            try self.captureDevice?.lockForConfiguration()
-            self.captureDevice?.autoFocusRangeRestriction = .near
-        } catch {
-        }
+//        var deviceInput: AVCaptureDeviceInput?
+//        do {
+//            if let captureDevice = captureDevice {
+//                deviceInput = try AVCaptureDeviceInput(device: captureDevice)
+//            }
+//        } catch {
+//            stopWithError(STPCardScanner.stp_cardScanningError())
+//            return
+//        }
+//
+//        if let deviceInput = deviceInput {
+//            if captureSession?.canAddInput(deviceInput) ?? false {
+//                captureSession?.addInput(deviceInput)
+//            } else {
+//                stopWithError(STPCardScanner.stp_cardScanningError())
+//                return
+//            }
+//        }
+//
+//        videoDataOutputQueue = DispatchQueue(label: "com.stripe.CardScanning.VideoDataOutputQueue")
+//        videoDataOutput = AVCaptureVideoDataOutput()
+//        videoDataOutput?.alwaysDiscardsLateVideoFrames = true
+//        videoDataOutput?.setSampleBufferDelegate(self, queue: videoDataOutputQueue)
+//
+//        // This is the recommended pixel buffer format for Vision:
+//        videoDataOutput?.videoSettings = [
+//            kCVPixelBufferPixelFormatTypeKey as String:
+//                kCVPixelFormatType_420YpCbCr8BiPlanarFullRange,
+//        ]
+//
+//        if let videoDataOutput = videoDataOutput {
+//            if captureSession?.canAddOutput(videoDataOutput) ?? false {
+//                captureSession?.addOutput(videoDataOutput)
+//            } else {
+//                stopWithError(STPCardScanner.stp_cardScanningError())
+//                return
+//            }
+//        }
+//
+//        // This improves recognition quality, but means the VideoDataOutput buffers won't match what we're seeing on screen.
+//        videoDataOutput?.connection(with: .video)?.preferredVideoStabilizationMode = .auto
+//
+//        captureSession?.startRunning()
+//
+//        do {
+//            try self.captureDevice?.lockForConfiguration()
+//            self.captureDevice?.autoFocusRangeRestriction = .near
+//        } catch {
+//        }
     }
 
     // MARK: Processing
@@ -374,7 +374,7 @@ class STPCardScanner: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
             DispatchQueue.main.async(execute: {
                 let strongSelf = weakSelf
                 strongSelf?.cameraView?.playSnapshotAnimation()
-                strongSelf?.feedbackGenerator?.notificationOccurred(.success)
+//                strongSelf?.feedbackGenerator?.notificationOccurred(.success)
             })
             // Just in case we don't get any frames, add another call to `finishIfReady` after timeoutTime to check
             videoDataOutputQueue?.asyncAfter(
@@ -465,9 +465,9 @@ class STPCardScanner: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
             } else {
                 STPAnalyticsClient.sharedClient.logCardScanSucceeded(withDuration: duration ?? 0.0)
             }
-            self.feedbackGenerator = nil
+//            self.feedbackGenerator = nil
 
-            self.cameraView?.captureSession = nil
+//            self.cameraView?.captureSession = nil
             self.delegate?.cardScanner(self, didFinishWith: params, error: error)
         })
     }

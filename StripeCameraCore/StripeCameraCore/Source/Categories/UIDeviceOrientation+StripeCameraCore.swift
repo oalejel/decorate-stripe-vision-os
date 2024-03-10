@@ -11,16 +11,16 @@ import Foundation
 import UIKit
 
 @_spi(STP) extension UIDeviceOrientation {
-    public var videoOrientation: AVCaptureVideoOrientation {
-        switch UIDevice.current.orientation {
-        case .portraitUpsideDown:
-            return .portraitUpsideDown
-        case .landscapeLeft:
-            return .landscapeRight
-        case .landscapeRight:
-            return .landscapeLeft
-        default:
-            return .portrait
-        }
-    }
+//    public var videoOrientation: AVCaptureVideoOrientation {
+//        switch UIDevice.current.orientation {
+//        case .portraitUpsideDown:
+//            return .portraitUpsideDown
+//        case .landscapeLeft:
+//            return .landscapeRight
+//        case .landscapeRight:
+//            return .landscapeLeft
+//        default:
+//            return .portrait
+//        }
+//    }
 }

@@ -19,15 +19,15 @@ class STPPaymentCardTextFieldCell: UITableViewCell {
     }
 
     private var _inputAccessoryView: UIView?
-    override var inputAccessoryView: UIView? {
-        get {
-            _inputAccessoryView
-        }
-        set(inputAccessoryView) {
-            _inputAccessoryView = inputAccessoryView
-            paymentField?.inputAccessoryView = inputAccessoryView
-        }
-    }
+//    override var inputAccessoryView: UIView? {
+//        get {
+//            _inputAccessoryView
+//        }
+//        set(inputAccessoryView) {
+//            _inputAccessoryView = inputAccessoryView
+//            paymentField?.inputAccessoryView = inputAccessoryView
+//        }
+//    }
 
     func isEmpty() -> Bool {
         return (paymentField?.cardNumber?.count ?? 0) == 0

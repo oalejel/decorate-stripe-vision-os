@@ -10,9 +10,9 @@ import AVFoundation
 import UIKit
 
 @_spi(STP) public class CameraPreviewView: UIView {
-    var videoPreviewLayer: AVCaptureVideoPreviewLayer {
-        return layer as! AVCaptureVideoPreviewLayer
-    }
+//    var videoPreviewLayer: AVCaptureVideoPreviewLayer {
+//        return layer as! AVCaptureVideoPreviewLayer
+//    }
 
     /// Camera session that configures the video feed for this view.
     ///
@@ -34,7 +34,7 @@ import UIKit
     public init() {
         super.init(frame: .zero)
 
-        videoPreviewLayer.videoGravity = .resizeAspectFill
+//        videoPreviewLa /yer.videoGravity = .resizeAspectFill
     }
 
     required init?(
@@ -46,7 +46,7 @@ import UIKit
     // MARK: UIView
 
     public override class var layerClass: AnyClass {
-        return AVCaptureVideoPreviewLayer.self
+        return CALayer.self
     }
 
     // MARK: Internal
@@ -66,10 +66,10 @@ import UIKit
 
         let mainWorkItem = DispatchWorkItem { [weak self] in
             guard let self = self else { return }
-            cameraSessionQueue.async {
-                [weak captureSession, weak videoPreviewLayer = self.videoPreviewLayer] in
-                videoPreviewLayer?.session = captureSession
-            }
+//            cameraSessionQueue.async {
+//                _ in
+////                videoPreviewLayer?.session = captureSession
+//            }
         }
 
         if Thread.isMainThread {

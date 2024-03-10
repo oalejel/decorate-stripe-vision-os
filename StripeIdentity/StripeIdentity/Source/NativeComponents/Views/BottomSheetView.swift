@@ -27,7 +27,7 @@ final class BottomSheetView: UIView {
 
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
-        scrollView.keyboardDismissMode = .none
+//        scrollView.keyboardDismissMode = .none
         return scrollView
     }()
 
@@ -129,7 +129,7 @@ final class BottomSheetView: UIView {
 
     /// Calculate height of content by adding vertical stack&button and paddings together. If height is over half of screen size, set max height at half of screen size.
     private func calculateContentHeight() -> CGFloat {
-        let halfScreenHeight = UIScreen.main.bounds.height/2
+        let halfScreenHeight = CGFloat(0)//UIScreen.main.bounds.height/2
         let contentHeight = verticalStack.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height + linePaddings() + closeButtonBackground.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
         return min(halfScreenHeight, contentHeight)
     }

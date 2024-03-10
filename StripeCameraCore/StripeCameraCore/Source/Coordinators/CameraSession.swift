@@ -20,16 +20,16 @@ import AVKit
 
     var previewView: CameraPreviewView? { get set }
 
-    func configureSession(
-        configuration: CameraSession.Configuration,
-        delegate: AVCaptureVideoDataOutputSampleBufferDelegate,
-        completeOn queue: DispatchQueue,
-        completion: @escaping (CameraSession.SetupResult) -> Void
-    )
+//    func configureSession(
+//        configuration: CameraSession.Configuration,
+//        delegate: AVCaptureVideoDataOutputSampleBufferDelegate,
+//        completeOn queue: DispatchQueue,
+//        completion: @escaping (CameraSession.SetupResult) -> Void
+//    )
 
-    func setVideoOrientation(
-        orientation: AVCaptureVideoOrientation
-    )
+//    func setVideoOrientation(
+//        orientation: AVCaptureVideoOrientation
+//    )
 
     func toggleCamera(
         to position: CameraSession.CameraPosition,
@@ -52,7 +52,7 @@ import AVKit
     )
 }
 
-@_spi(STP) public final class CameraSession: CameraSessionProtocol {
+@_spi(STP) public final class CameraSession {
     @frozen public enum SetupResult {
         /// Session has successfully updated
         case success
@@ -65,55 +65,55 @@ import AVKit
         case back
     }
 
-    public struct Configuration {
-        /// The initial position of camera: front or back
-        public let initialCameraPosition: CameraPosition
-        /// The initial video orientation of the camera session
-        public let initialOrientation: AVCaptureVideoOrientation
-        /// The capture device’s focus mode.
-        /// - Seealso: https://developer.apple.com/documentation/avfoundation/avcapturedevice/focusmode
-        public let focusMode: AVCaptureDevice.FocusMode?
-        /// The point of interest for focusing.
-        /// - Seealso:
-        /// https://developer.apple.com/documentation/avfoundation/avcapturedevice/focuspointofinterest
-        public let focusPointOfInterest: CGPoint?
-        /// A preset value of the quality of the capture session
-        public let sessionPreset: AVCaptureSession.Preset
-        /// Video settings for the video output
-        /// - Seealso: https://developer.apple.com/documentation/avfoundation/avcapturephotosettings/video_settings
-        public let outputSettings: [String: Any]
-        /// https://developer.apple.com/documentation/avfoundation/avcapturedevice/1624622-autofocusrangerestriction
-        public let autoFocusRangeRestriction: AVCaptureDevice.AutoFocusRangeRestriction
-
-        /// - Parameters:
-        ///   - initialCameraPosition: The initial position of camera: front or back
-        ///   - initialOrientation: The initial video orientation of the camera session
-        ///   - focusMode: The focus mode of the camera session
-        ///   - focusPointOfInterest: The point of interest for focusing
-        ///   - sessionPreset: A preset value of the quality of the capture session
-        ///   - outputSettings: Video settings for the video output
-        public init(
-            initialCameraPosition: CameraPosition,
-            initialOrientation: AVCaptureVideoOrientation,
-            focusMode: AVCaptureDevice.FocusMode? = nil,
-            focusPointOfInterest: CGPoint? = nil,
-            sessionPreset: AVCaptureSession.Preset = .high,
-            outputSettings: [String: Any] = [:],
-            autoFocusRangeRestriction: AVCaptureDevice.AutoFocusRangeRestriction = .none
-        ) {
-            self.initialCameraPosition = initialCameraPosition
-            self.initialOrientation = initialOrientation
-            self.focusMode = focusMode
-            self.focusPointOfInterest = focusPointOfInterest
-            self.sessionPreset = sessionPreset
-            self.outputSettings = outputSettings
-            self.autoFocusRangeRestriction = autoFocusRangeRestriction
-        }
-    }
+//    public struct Configuration {
+//        /// The initial position of camera: front or back
+//        public let initialCameraPosition: CameraPosition
+//        /// The initial video orientation of the camera session
+//        public let initialOrientation: AVCaptureVideoOrientation
+//        /// The capture device’s focus mode.
+//        /// - Seealso: https://developer.apple.com/documentation/avfoundation/avcapturedevice/focusmode
+//        public let focusMode: AVCaptureDevice.FocusMode?
+//        /// The point of interest for focusing.
+//        /// - Seealso:
+//        /// https://developer.apple.com/documentation/avfoundation/avcapturedevice/focuspointofinterest
+//        public let focusPointOfInterest: CGPoint?
+//        /// A preset value of the quality of the capture session
+//        public let sessionPreset: AVCaptureSession.Preset
+//        /// Video settings for the video output
+//        /// - Seealso: https://developer.apple.com/documentation/avfoundation/avcapturephotosettings/video_settings
+//        public let outputSettings: [String: Any]
+//        /// https://developer.apple.com/documentation/avfoundation/avcapturedevice/1624622-autofocusrangerestriction
+//        public let autoFocusRangeRestriction: AVCaptureDevice.AutoFocusRangeRestriction
+//
+//        /// - Parameters:
+//        ///   - initialCameraPosition: The initial position of camera: front or back
+//        ///   - initialOrientation: The initial video orientation of the camera session
+//        ///   - focusMode: The focus mode of the camera session
+//        ///   - focusPointOfInterest: The point of interest for focusing
+//        ///   - sessionPreset: A preset value of the quality of the capture session
+//        ///   - outputSettings: Video settings for the video output
+//        public init(
+//            initialCameraPosition: CameraPosition,
+//            initialOrientation: AVCaptureVideoOrientation,
+//            focusMode: AVCaptureDevice.FocusMode? = nil,
+//            focusPointOfInterest: CGPoint? = nil,
+//            sessionPreset: AVCaptureSession.Preset = .high,
+//            outputSettings: [String: Any] = [:],
+//            autoFocusRangeRestriction: AVCaptureDevice.AutoFocusRangeRestriction = .none
+//        ) {
+//            self.initialCameraPosition = initialCameraPosition
+//            self.initialOrientation = initialOrientation
+//            self.focusMode = focusMode
+//            self.focusPointOfInterest = focusPointOfInterest
+//            self.sessionPreset = sessionPreset
+//            self.outputSettings = outputSettings
+//            self.autoFocusRangeRestriction = autoFocusRangeRestriction
+//        }
+//    }
 
     public struct DeviceProperties: Equatable {
         public let exposureDuration: CMTime
-        public let cameraDeviceType: AVCaptureDevice.DeviceType
+//        public let cameraDeviceType: AVCaptureDevice.DeviceType
         public let isVirtualDevice: Bool?
         public let lensPosition: Float
         public let exposureISO: Float
@@ -165,48 +165,48 @@ import AVKit
     ///   - delegate:
     ///   - queue: DispatchQueue the completion block should be called on
     ///   - completion: A block executed when the session is done being configured
-    public func configureSession(
-        configuration: Configuration,
-        delegate: AVCaptureVideoDataOutputSampleBufferDelegate,
-        completeOn queue: DispatchQueue,
-        completion: @escaping (SetupResult) -> Void
-    ) {
-        sessionQueue.async { [weak self] in
-            guard let self = self else { return }
-
-            // Check if already configured
-            if let setupResult = self.setupResult {
-                completion(setupResult)
-                return
-            }
-
-            self.session.beginConfiguration()
-            self.session.sessionPreset = configuration.sessionPreset
-            self.session.commitConfiguration()
-
-            self.configureSessionInput(with: configuration.initialCameraPosition).chained {
-                [weak self] _ -> Future<Void> in
-                guard let self = self else {
-                    // If self has been deallocated before configuring output, return failure
-                    let promise = Promise<Void>()
-                    promise.reject(with: CameraSessionError.configurationFailed)
-                    return promise
-                }
-
-                return self.configureSessionOutput(
-                    with: configuration.outputSettings,
-                    orientation: configuration.initialOrientation,
-                    focusMode: configuration.focusMode,
-                    focusPointOfInterest: configuration.focusPointOfInterest,
-                    autoFocusRangeRestriction: configuration.autoFocusRangeRestriction,
-                    delegate: delegate
-                )
-            }.observe(on: queue) { [weak self] result in
-                self?.setupResult = result.setupResult
-                completion(result.setupResult)
-            }
-        }
-    }
+//    public func configureSession(
+//        configuration: Configuration,
+//        delegate: AVCaptureVideoDataOutputSampleBufferDelegate,
+//        completeOn queue: DispatchQueue,
+//        completion: @escaping (SetupResult) -> Void
+//    ) {
+//        sessionQueue.async { [weak self] in
+//            guard let self = self else { return }
+//
+//            // Check if already configured
+//            if let setupResult = self.setupResult {
+//                completion(setupResult)
+//                return
+//            }
+//
+//            self.session.beginConfiguration()
+//            self.session.sessionPreset = configuration.sessionPreset
+//            self.session.commitConfiguration()
+//
+//            self.configureSessionInput(with: configuration.initialCameraPosition).chained {
+//                [weak self] _ -> Future<Void> in
+//                guard let self = self else {
+//                    // If self has been deallocated before configuring output, return failure
+//                    let promise = Promise<Void>()
+//                    promise.reject(with: CameraSessionError.configurationFailed)
+//                    return promise
+//                }
+//
+//                return self.configureSessionOutput(
+//                    with: configuration.outputSettings,
+//                    orientation: configuration.initialOrientation,
+//                    focusMode: configuration.focusMode,
+//                    focusPointOfInterest: configuration.focusPointOfInterest,
+//                    autoFocusRangeRestriction: configuration.autoFocusRangeRestriction,
+//                    delegate: delegate
+//                )
+//            }.observe(on: queue) { [weak self] result in
+//                self?.setupResult = result.setupResult
+//                completion(result.setupResult)
+//            }
+//        }
+//    }
 
     /// Attempts to change the video orientation of both the session output
     /// and the preview view layer.
@@ -214,14 +214,14 @@ import AVKit
     /// - Parameters:
     ///   - orientation: The desired video orientation
     public func setVideoOrientation(
-        orientation: AVCaptureVideoOrientation
+        
     ) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-
-            self.captureConnection?.videoOrientation = orientation
-            self.previewView?.videoPreviewLayer.connection?.videoOrientation = orientation
-        }
+//        DispatchQueue.main.async { [weak self] in
+//            guard let self = self else { return }
+//
+//            self.captureConnection?.videoOrientation = orientation
+//            self.previewView?.videoPreviewLayer.connection?.videoOrientation = orientation
+//        }
     }
 
     /// Returns the properties from the camera device.
@@ -229,24 +229,23 @@ import AVKit
     /// - Note: This method can only be called on the camera session thread,
     ///   meaning it's only meant to be called from the output delegate's
     ///   `captureOutput` method.
-    public func getCameraProperties() -> CameraSession.DeviceProperties? {
-        dispatchPrecondition(condition: .onQueue(sessionQueue))
-
-        guard let device = videoDeviceInput?.device else {
-            return nil
-        }
-
-        let isVirtualDevice = device.isVirtualDevice
-
-        return .init(
-            exposureDuration: device.exposureDuration,
-            cameraDeviceType: device.deviceType,
-            isVirtualDevice: isVirtualDevice,
-            lensPosition: device.lensPosition,
-            exposureISO: device.iso,
-            isAdjustingFocus: device.isAdjustingFocus
-        )
-    }
+//    public func getCameraProperties() -> CameraSession.DeviceProperties? {
+//        dispatchPrecondition(condition: .onQueue(sessionQueue))
+//
+//        guard let device = videoDeviceInput?.device else {
+//            return nil
+//        }
+//
+////        let isVirtualDevice = device.isVirtualDevice
+//
+//        return .init(
+//            exposureDuration: device.exposureDuration,
+//            isVirtualDevice: isVirtualDevice,
+//            lensPosition: device.lensPosition,
+//            exposureISO: device.iso,
+//            isAdjustingFocus: device.isAdjustingFocus
+//        )
+//    }
 
     /// Attempts to switch camera input to a new camera position.
     /// - Parameters:
@@ -340,18 +339,18 @@ extension CameraSession {
                     self.session.removeInput($0)
                 }
 
-                let newVideoDeviceInput = try self.captureDeviceInput(position: position)
+//                let newVideoDeviceInput = try self.captureDeviceInput(position: position)
 
                 // Add video input
-                guard self.session.canAddInput(newVideoDeviceInput)
-                else {
-                    promise.reject(with: CameraSessionError.configurationFailed)
-                    return
-                }
-                self.session.addInput(newVideoDeviceInput)
-
-                // Keep reference to video device input
-                self.videoDeviceInput = newVideoDeviceInput
+//                guard self.session.canAddInput(newVideoDeviceInput)
+//                else {
+//                    promise.reject(with: CameraSessionError.configurationFailed)
+//                    return
+//                }
+//                self.session.addInput(newVideoDeviceInput)
+//
+//                // Keep reference to video device input
+//                self.videoDeviceInput = newVideoDeviceInput
 
                 promise.resolve(with: ())
             } catch {
@@ -362,136 +361,136 @@ extension CameraSession {
         return promise
     }
 
-    fileprivate func configureSessionOutput(
-        with videoSettings: [String: Any],
-        orientation: AVCaptureVideoOrientation,
-        focusMode: AVCaptureDevice.FocusMode?,
-        focusPointOfInterest: CGPoint?,
-        autoFocusRangeRestriction: AVCaptureDevice.AutoFocusRangeRestriction,
-        delegate: AVCaptureVideoDataOutputSampleBufferDelegate
-    ) -> Future<Void> {
-        let promise = Promise<Void>()
+//    fileprivate func configureSessionOutput(
+//        with videoSettings: [String: Any],
+//        orientation: AVCaptureVideoOrientation,
+//        focusMode: AVCaptureDevice.FocusMode?,
+//        focusPointOfInterest: CGPoint?,
+//        autoFocusRangeRestriction: AVCaptureDevice.AutoFocusRangeRestriction,
+//        delegate: AVCaptureVideoDataOutputSampleBufferDelegate
+//    ) -> Future<Void> {
+//        let promise = Promise<Void>()
+//
+//        sessionQueue.async { [weak self] in
+//            guard let self = self else { return }
+//
+//            self.session.beginConfiguration()
+//            defer {
+//                self.session.commitConfiguration()
+//            }
+//
+//            let videoOutput = AVCaptureVideoDataOutput()
+//            videoOutput.videoSettings = videoSettings
+//            videoOutput.alwaysDiscardsLateVideoFrames = true
+//            videoOutput.setSampleBufferDelegate(delegate, queue: self.sessionQueue)
+//
+//            guard self.session.canAddOutput(videoOutput) else {
+//                promise.reject(with: CameraSessionError.configurationFailed)
+//                return
+//            }
+//
+//            // Add output to session
+//            self.session.addOutput(videoOutput)
+//
+//            // Update output connection reference
+//            self.captureConnection = videoOutput.connection(with: .video)
+//
+//            // Update new output and previewLayer orientation
+//            self.setVideoOrientation(orientation: orientation)
+//
+//            // Set focus if needed
+//            guard let focusMode = focusMode else {
+//                promise.resolve(with: ())
+//                return
+//            }
+//
+//            promise.fulfill { [weak self] in
+//                try self?.setFocusOnCurrentQueue(
+//                    focusMode: focusMode,
+//                    autoFocusRangeRestriction: autoFocusRangeRestriction,
+//                    focusPointOfInterest: focusPointOfInterest
+//                )
+//            }
+//        }
+//
+//        return promise
+//    }
 
-        sessionQueue.async { [weak self] in
-            guard let self = self else { return }
+//    fileprivate func captureDeviceInput(position: CameraPosition) throws -> AVCaptureDeviceInput {
+//        let captureDevices = AVCaptureDevice.DiscoverySession(
+//            deviceTypes: position.captureDeviceTypes,
+//            mediaType: .video,
+//            position: position.captureDevicePosition
+//        )
+//
+//        guard let captureDevice = captureDevices.devices.first else {
+//            throw CameraSessionError.captureDeviceNotFound
+//        }
+//
+//        return try AVCaptureDeviceInput(device: captureDevice)
+//    }
 
-            self.session.beginConfiguration()
-            defer {
-                self.session.commitConfiguration()
-            }
-
-            let videoOutput = AVCaptureVideoDataOutput()
-            videoOutput.videoSettings = videoSettings
-            videoOutput.alwaysDiscardsLateVideoFrames = true
-            videoOutput.setSampleBufferDelegate(delegate, queue: self.sessionQueue)
-
-            guard self.session.canAddOutput(videoOutput) else {
-                promise.reject(with: CameraSessionError.configurationFailed)
-                return
-            }
-
-            // Add output to session
-            self.session.addOutput(videoOutput)
-
-            // Update output connection reference
-            self.captureConnection = videoOutput.connection(with: .video)
-
-            // Update new output and previewLayer orientation
-            self.setVideoOrientation(orientation: orientation)
-
-            // Set focus if needed
-            guard let focusMode = focusMode else {
-                promise.resolve(with: ())
-                return
-            }
-
-            promise.fulfill { [weak self] in
-                try self?.setFocusOnCurrentQueue(
-                    focusMode: focusMode,
-                    autoFocusRangeRestriction: autoFocusRangeRestriction,
-                    focusPointOfInterest: focusPointOfInterest
-                )
-            }
-        }
-
-        return promise
-    }
-
-    fileprivate func captureDeviceInput(position: CameraPosition) throws -> AVCaptureDeviceInput {
-        let captureDevices = AVCaptureDevice.DiscoverySession(
-            deviceTypes: position.captureDeviceTypes,
-            mediaType: .video,
-            position: position.captureDevicePosition
-        )
-
-        guard let captureDevice = captureDevices.devices.first else {
-            throw CameraSessionError.captureDeviceNotFound
-        }
-
-        return try AVCaptureDeviceInput(device: captureDevice)
-    }
-
-    fileprivate func setFocusOnCurrentQueue(
-        focusMode: AVCaptureDevice.FocusMode,
-        autoFocusRangeRestriction: AVCaptureDevice.AutoFocusRangeRestriction,
-        focusPointOfInterest: CGPoint?
-    ) throws {
-        dispatchPrecondition(condition: .onQueue(sessionQueue))
-
-        guard let device = videoDeviceInput?.device else {
-            return
-        }
-
-        try device.lockForConfiguration()
-        if device.isFocusModeSupported(focusMode) {
-            device.focusMode = focusMode
-
-        }
-
-        if device.isAutoFocusRangeRestrictionSupported {
-            device.autoFocusRangeRestriction = autoFocusRangeRestriction
-        }
-
-        if let focusPointOfInterest = focusPointOfInterest,
-            device.isFocusPointOfInterestSupported
-        {
-            if device.isSmoothAutoFocusSupported {
-                device.isSmoothAutoFocusEnabled = true
-            }
-            device.focusPointOfInterest = focusPointOfInterest
-        }
-
-        if device.isLowLightBoostSupported {
-            device.automaticallyEnablesLowLightBoostWhenAvailable = true
-        }
-        device.unlockForConfiguration()
-    }
+//    fileprivate func setFocusOnCurrentQueue(
+//        focusMode: AVCaptureDevice.FocusMode,
+//        autoFocusRangeRestriction: AVCaptureDevice.AutoFocusRangeRestriction,
+//        focusPointOfInterest: CGPoint?
+//    ) throws {
+//        dispatchPrecondition(condition: .onQueue(sessionQueue))
+//
+//        guard let device = videoDeviceInput?.device else {
+//            return
+//        }
+//
+//        try device.lockForConfiguration()
+//        if device.isFocusModeSupported(focusMode) {
+//            device.focusMode = focusMode
+//
+//        }
+//
+//        if device.isAutoFocusRangeRestrictionSupported {
+//            device.autoFocusRangeRestriction = autoFocusRangeRestriction
+//        }
+//
+//        if let focusPointOfInterest = focusPointOfInterest,
+//            device.isFocusPointOfInterestSupported
+//        {
+//            if device.isSmoothAutoFocusSupported {
+//                device.isSmoothAutoFocusEnabled = true
+//            }
+//            device.focusPointOfInterest = focusPointOfInterest
+//        }
+//
+//        if device.isLowLightBoostSupported {
+//            device.automaticallyEnablesLowLightBoostWhenAvailable = true
+//        }
+//        device.unlockForConfiguration()
+//    }
 }
 
 // MARK: - CameraPosition
 
-extension CameraSession.CameraPosition {
-    /// Returns a list of camera devices, ordered by preferred device, for this
-    /// camera position.
-    var captureDeviceTypes: [AVCaptureDevice.DeviceType] {
-        switch self {
-        case .front:
-            return [.builtInTrueDepthCamera, .builtInWideAngleCamera]
-
-        case .back:
-            return [.builtInTripleCamera, .builtInDualCamera, .builtInDualWideCamera, .builtInWideAngleCamera]
-        }
-    }
-
-    var captureDevicePosition: AVCaptureDevice.Position {
-        switch self {
-        case .front:
-            return .front
-        case .back:
-            return .back
-        }
-    }
-}
+//extension CameraSession.CameraPosition {
+//    /// Returns a list of camera devices, ordered by preferred device, for this
+//    /// camera position.
+//    var captureDeviceTypes: [AVCaptureDevice.DeviceType] {
+//        switch self {
+//        case .front:
+//            return [.builtInTrueDepthCamera, .builtInWideAngleCamera]
+//
+//        case .back:
+//            return [.builtInTripleCamera, .builtInDualCamera, .builtInDualWideCamera, .builtInWideAngleCamera]
+//        }
+//    }
+//
+//    var captureDevicePosition: AVCaptureDevice.Position {
+//        switch self {
+//        case .front:
+//            return .front
+//        case .back:
+//            return .back
+//        }
+//    }
+//}
 
 // MARK: - Result
 

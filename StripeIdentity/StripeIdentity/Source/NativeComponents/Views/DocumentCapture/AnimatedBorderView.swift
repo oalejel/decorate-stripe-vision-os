@@ -110,7 +110,7 @@ final class AnimatedBorderView: UIView {
 
         if let window = window {
             gradientLayer.shouldRasterize = true
-            gradientLayer.rasterizationScale = window.screen.scale
+//            gradientLayer.rasterizationScale = window.screen.scale
         }
 
         if isAnimating {

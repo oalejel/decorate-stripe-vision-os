@@ -253,50 +253,50 @@ final class ImageScanningSession<
     private func setupCameraAndStartScanning(
         expectedClassification: ExpectedClassificationType
     ) {
-        permissionsManager.requestCameraAccess(completeOnQueue: .main) { [weak self] granted in
-            guard let self = self else {
-                return
-            }
-
-            self.delegate?.imageScanningSession(self, didRequestCameraAccess: granted)
-
-            guard granted == true else {
-                self.state = .noCameraAccess
-                return
-            }
-
-            // Configure camera session
-            // Tell the camera to automatically adjust focus to the center of
-            // the image and restrict autofocus range to .near.
-            self.cameraSession.configureSession(
-                configuration: .init(
-                    initialCameraPosition: self.initialCameraPosition,
-                    initialOrientation: UIDevice.current.orientation.videoOrientation,
-                    focusMode: .continuousAutoFocus,
-                    focusPointOfInterest: CGPoint(x: 0.5, y: 0.5),
-                    outputSettings: [
-                        (kCVPixelBufferPixelFormatTypeKey as String): Int(
-                            IDDetectorConstants.requiredPixelFormat
-                        ),
-                    ],
-                    autoFocusRangeRestriction: .near
-                ),
-                delegate: self,
-                completeOn: .main
-            ) { [weak self] result in
-                guard let self = self else {
-                    return
-                }
-
-                switch result {
-                case .success:
-                    self.startScanning(expectedClassification: expectedClassification)
-                case .failed(let error):
-                    self.delegate?.imageScanningSession(self, cameraDidError: error)
-                    self.state = .cameraError
-                }
-            }
-        }
+//        permissionsManager.requestCameraAccess(completeOnQueue: .main) { [weak self] granted in
+//            guard let self = self else {
+//                return
+//            }
+//
+//            self.delegate?.imageScanningSession(self, didRequestCameraAccess: granted)
+//
+//            guard granted == true else {
+//                self.state = .noCameraAccess
+//                return
+//            }
+//
+//            // Configure camera session
+//            // Tell the camera to automatically adjust focus to the center of
+//            // the image and restrict autofocus range to .near.
+//            self.cameraSession.configureSession(
+//                configuration: .init(
+//                    initialCameraPosition: self.initialCameraPosition,
+//                    initialOrientation: UIDevice.current.orientation.videoOrientation,
+//                    focusMode: .continuousAutoFocus,
+//                    focusPointOfInterest: CGPoint(x: 0.5, y: 0.5),
+//                    outputSettings: [
+//                        (kCVPixelBufferPixelFormatTypeKey as String): Int(
+//                            IDDetectorConstants.requiredPixelFormat
+//                        ),
+//                    ],
+//                    autoFocusRangeRestriction: .near
+//                ),
+//                delegate: self,
+//                completeOn: .main
+//            ) { [weak self] result in
+//                guard let self = self else {
+//                    return
+//                }
+//
+//                switch result {
+//                case .success:
+//                    self.startScanning(expectedClassification: expectedClassification)
+//                case .failed(let error):
+//                    self.delegate?.imageScanningSession(self, cameraDidError: error)
+//                    self.state = .cameraError
+//                }
+//            }
+//        }
     }
 
     private func handleTimeout(expectedClassification: ExpectedClassificationType) {

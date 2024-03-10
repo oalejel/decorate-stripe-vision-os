@@ -150,14 +150,14 @@ final class HTMLTextView: UIView {
 }
 
 extension HTMLTextView: UITextViewDelegate {
-    func textView(
-        _ textView: UITextView,
-        shouldInteractWith url: URL,
-        in characterRange: NSRange
-    ) -> Bool {
-        viewModel?.didOpenURL(url)
-        return false
-    }
+//    func textView(
+//        _ textView: UITextView,
+//        shouldInteractWith url: URL,
+//        in characterRange: NSRange
+//    ) -> Bool {
+//        viewModel?.didOpenURL(url)
+//        return false
+//    }
 
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         // textView.isEditable must be true for links to be able to be opened on

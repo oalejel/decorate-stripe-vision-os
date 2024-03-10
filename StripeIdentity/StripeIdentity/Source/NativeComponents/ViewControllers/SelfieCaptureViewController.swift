@@ -272,9 +272,9 @@ final class SelfieCaptureViewController: IdentityFlowViewController {
     ) {
         super.viewWillTransition(to: size, with: coordinator)
 
-        imageScanningSession.cameraSession.setVideoOrientation(
-            orientation: UIDevice.current.orientation.videoOrientation
-        )
+//        imageScanningSession.cameraSession.setVideoOrientation(
+//            orientation: UIDevice.current.orientation.videoOrientation
+//        )
     }
 }
 

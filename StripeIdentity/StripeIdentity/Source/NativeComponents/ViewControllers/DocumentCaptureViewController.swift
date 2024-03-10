@@ -213,7 +213,7 @@ final class DocumentCaptureViewController: IdentityFlowViewController {
     // MARK: Instance Properties
 
     let apiConfig: StripeAPI.VerificationPageStaticContentDocumentCapturePage
-    private var feedbackGenerator: UINotificationFeedbackGenerator?
+//    private var feedbackGenerator: UINotificationFeedbackGenerator?
 
     // MARK: Coordinators
     let documentUploader: DocumentUploaderProtocol
@@ -297,9 +297,9 @@ final class DocumentCaptureViewController: IdentityFlowViewController {
     ) {
         super.viewWillTransition(to: size, with: coordinator)
 
-        imageScanningSession.cameraSession.setVideoOrientation(
-            orientation: UIDevice.current.orientation.videoOrientation
-        )
+//        imageScanningSession.cameraSession.setVideoOrientation(
+//            orientation: UIDevice.current.orientation.videoOrientation
+//        )
     }
 
     // MARK: - Configure
@@ -321,7 +321,7 @@ final class DocumentCaptureViewController: IdentityFlowViewController {
             return
         }
 
-        feedbackGenerator?.notificationOccurred(.success)
+//        feedbackGenerator?.notificationOccurred(.success)
     }
 
     // MARK: - State Transitions
@@ -459,8 +459,8 @@ extension DocumentCaptureViewController: ImageScanningSessionDelegate {
         UIAccessibility.post(notification: .layoutChanged, argument: self.documentCaptureView)
 
         // Prepare feedback generators
-        self.feedbackGenerator = UINotificationFeedbackGenerator()
-        self.feedbackGenerator?.prepare()
+//        self.feedbackGenerator = UINotificationFeedbackGenerator()
+//        self.feedbackGenerator?.prepare()
 
         // Increment analytics counter
         sheetController?.analyticsClient.countDidStartDocumentScan(for: documentSide)
@@ -482,7 +482,7 @@ extension DocumentCaptureViewController: ImageScanningSessionDelegate {
     }
 
     func imageScanningSessionDidStopScanning(_ scanningSession: DocumentImageScanningSession) {
-        feedbackGenerator = nil
+//        feedbackGenerator = nil
     }
 
     func imageScanningSessionDidScanImage(

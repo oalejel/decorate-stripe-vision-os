@@ -18,7 +18,7 @@ struct Torch {
         self.lastStateChange = Date()
         if device.hasTorch {
             self.device = device
-            if device.isTorchActive { self.state = .on }
+//            if device.isTorchActive { self.state = .on }
         } else {
             self.device = nil
         }
@@ -31,15 +31,15 @@ struct Torch {
         do {
             try self.device?.lockForConfiguration()
             if self.state == .on {
-                do {
-                    try self.device?.setTorchModeOn(level: self.level)
-                } catch {
-                    // no-op
-                }
+//                do {
+////                    try self.device?.setTorchModeOn(level: self.level)
+//                } catch {
+//                    // no-op
+//                }
             } else {
-                self.device?.torchMode = .off
+//                self.device?.torchMode = .off
             }
-            self.device?.unlockForConfiguration()
+//            self.device?.unlockForConfiguration()
         } catch {
             // no-op
         }

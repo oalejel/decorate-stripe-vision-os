@@ -455,7 +455,7 @@ public class STPAddCardViewController: STPCoreTableViewController, STPAddressVie
         for cell in addressViewModel.addressCells {
             cell.theme = theme
         }
-        setNeedsStatusBarAppearanceUpdate()
+//        setNeedsStatusBarAppearanceUpdate()
     }
 
     /// :nodoc:
@@ -572,7 +572,7 @@ public class STPAddCardViewController: STPCoreTableViewController, STPAddressVie
         // It should only be shown when there *is* an address field. This compensates for the lack
         // of a 'Return' key on the number pad used for paymentCell entry
         let hasAddressCells = (addressViewModel.addressCells.count) > 0
-        paymentCell?.inputAccessoryView = hasAddressCells ? inputAccessoryToolbar : nil
+//        paymentCell?.inputAccessoryView = hasAddressCells ? inputAccessoryToolbar : nil
     }
 
     /// Only send form interacted analytic once per time this screen is shown
@@ -852,12 +852,12 @@ public class STPAddCardViewController: STPCoreTableViewController, STPAddressVie
         with coordinator: UIViewControllerTransitionCoordinator
     ) {
         super.viewWillTransition(to: size, with: coordinator)
-        let orientation = UIDevice.current.orientation
-        if orientation.isPortrait || orientation.isLandscape {
-            if #available(macCatalyst 14.0, *) {
-                cardScanner?.deviceOrientation = orientation
-            }
-        }
+//        let orientation = UIDevice.current.orientation
+//        if orientation.isPortrait || orientation.isLandscape {
+//            if #available(macCatalyst 14.0, *) {
+//                cardScanner?.deviceOrientation = orientation
+//            }
+//        }
         if isScanning {
             let indexPath = IndexPath(
                 row: 0,

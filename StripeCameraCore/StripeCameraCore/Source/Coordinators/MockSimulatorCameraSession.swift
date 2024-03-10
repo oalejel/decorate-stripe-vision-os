@@ -17,7 +17,7 @@ import Foundation
 @_spi(STP) import StripeCore
 
 /// Mocks a CameraSession on the simulator.
-@_spi(STP) public final class MockSimulatorCameraSession: CameraSessionProtocol {
+@_spi(STP) public final class MockSimulatorCameraSession {
 
     enum Error: Swift.Error {
         case sessionNotConfigured
@@ -31,10 +31,10 @@ import Foundation
     private var currentImage: UIImage?
     private let sessionQueue = DispatchQueue(label: "com.stripe.mock-simulator-camera-session")
     private let videoOutput = AVCaptureVideoDataOutput()
-    private lazy var captureConnection = AVCaptureConnection(
-        inputPorts: [],
-        output: videoOutput
-    )
+//    private lazy var captureConnection = AVCaptureConnection(
+//        inputPorts: [],
+//        output: videoOutput
+//    )
     private var mockSampleBufferTimer: Timer?
     weak private var delegate: AVCaptureVideoDataOutputSampleBufferDelegate?
 
@@ -55,37 +55,37 @@ import Foundation
         self.images = images
     }
 
-    public func configureSession(
-        configuration: CameraSession.Configuration,
-        delegate: AVCaptureVideoDataOutputSampleBufferDelegate,
-        completeOn queue: DispatchQueue,
-        completion: @escaping (CameraSession.SetupResult) -> Void
-    ) {
-        sessionQueue.async { [weak self] in
-            let wrappedCompletion = { setupResult in
-                queue.async {
-                    completion(setupResult)
-                }
-            }
-
-            guard let self = self else { return }
-            self.delegate = delegate
-
-            guard !self.images.isEmpty else {
-                self.isConfigured = false
-                wrappedCompletion(.failed(error: Error.noImages))
-                return
-            }
-
-            self.cameraPosition = configuration.initialCameraPosition
-            self.isConfigured = true
-            wrappedCompletion(.success)
-        }
-    }
-
-    public func setVideoOrientation(orientation: AVCaptureVideoOrientation) {
-        // no-op
-    }
+//    public func configureSession(
+//        configuration: CameraSession.Configuration,
+//        delegate: AVCaptureVideoDataOutputSampleBufferDelegate,
+//        completeOn queue: DispatchQueue,
+//        completion: @escaping (CameraSession.SetupResult) -> Void
+//    ) {
+//        sessionQueue.async { [weak self] in
+//            let wrappedCompletion = { setupResult in
+//                queue.async {
+//                    completion(setupResult)
+//                }
+//            }
+//
+//            guard let self = self else { return }
+//            self.delegate = delegate
+//
+//            guard !self.images.isEmpty else {
+//                self.isConfigured = false
+//                wrappedCompletion(.failed(error: Error.noImages))
+//                return
+//            }
+//
+//            self.cameraPosition = configuration.initialCameraPosition
+//            self.isConfigured = true
+//            wrappedCompletion(.success)
+//        }
+//    }
+//
+//    public func setVideoOrientation(orientation: AVCaptureVideoOrientation) {
+//        // no-op
+//    }
 
     public func toggleCamera(
         to position: CameraSession.CameraPosition,
@@ -111,16 +111,16 @@ import Foundation
         }
     }
 
-    public func getCameraProperties() -> CameraSession.DeviceProperties? {
-        return .init(
-            exposureDuration: CMTime(value: 0, timescale: 1),
-            cameraDeviceType: .builtInDualCamera,
-            isVirtualDevice: nil,
-            lensPosition: 0,
-            exposureISO: 0,
-            isAdjustingFocus: false
-        )
-    }
+//    public func getCameraProperties() -> CameraSession.DeviceProperties? {
+//        return .init(
+//            exposureDuration: CMTime(value: 0, timescale: 1),
+//            cameraDeviceType: .builtInDualCamera,
+//            isVirtualDevice: nil,
+//            lensPosition: 0,
+//            exposureISO: 0,
+//            isAdjustingFocus: false
+//        )
+//    }
 
     public func toggleTorch() {
         // no-op
@@ -200,11 +200,11 @@ extension MockSimulatorCameraSession {
                 return
             }
 
-            self.delegate?.captureOutput?(
-                self.videoOutput,
-                didOutput: sampleBuffer,
-                from: self.captureConnection
-            )
+//            self.delegate?.captureOutput?(
+//                self.videoOutput,
+//                didOutput: sampleBuffer,
+//                from: self.captureConnection
+//            )
         }
     }
 

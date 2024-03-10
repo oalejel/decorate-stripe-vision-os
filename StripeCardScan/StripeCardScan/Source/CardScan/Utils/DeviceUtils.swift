@@ -5,7 +5,7 @@
 //  Created by Jaime Park on 4/15/21.
 //
 
-import CoreTelephony
+//import CoreTelephony
 import Foundation
 import UIKit
 
@@ -62,16 +62,17 @@ struct DeviceUtils {
     }
 
     static internal func getCarrier() -> String? {
-        let networkInfo = CTTelephonyNetworkInfo()
-        guard
-            let firstNamedCarrier = networkInfo.serviceSubscriberCellularProviders?.first(where: {
-                $0.value.carrierName != nil
-            })?.value
-        else {
-            return nil
-        }
-
-        return firstNamedCarrier.carrierName
+//        let networkInfo = CTTelephonyNetworkInfo()
+//        guard
+//            let firstNamedCarrier = networkInfo.serviceSubscriberCellularProviders?.first(where: {
+//                $0.value.carrierName != nil
+//            })?.value
+//        else {
+//            return nil
+//        }
+//
+//        return firstNamedCarrier.carrierName
+        return nil
     }
 
     static internal func getOsVersion() -> String {

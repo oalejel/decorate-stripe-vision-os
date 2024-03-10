@@ -86,7 +86,7 @@ class IdentityFlowView: UIView {
 
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
-        scrollView.keyboardDismissMode = .none
+//        scrollView.keyboardDismissMode = .none
         return scrollView
     }()
 

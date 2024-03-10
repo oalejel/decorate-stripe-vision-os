@@ -14,17 +14,18 @@ class STPCameraView: UIView {
     private var flashLayer: CALayer?
 
     var captureSession: AVCaptureSession? {
-        get {
-            return (videoPreviewLayer.session)!
-        }
-        set(captureSession) {
-            videoPreviewLayer.session = captureSession
-        }
+        return nil
+//        get {
+//            return (videoPreviewLayer.session)!
+//        }
+//        set(captureSession) {
+//            videoPreviewLayer.session = captureSession
+//        }
     }
 
-    var videoPreviewLayer: AVCaptureVideoPreviewLayer {
-        return layer as! AVCaptureVideoPreviewLayer
-    }
+//    var videoPreviewLayer: AVCaptureVideoPreviewLayer {
+//        return layer as! AVCaptureVideoPreviewLayer
+//    }
 
     func playSnapshotAnimation() {
         CATransaction.begin()
@@ -62,11 +63,11 @@ class STPCameraView: UIView {
         flashLayer?.backgroundColor = UIColor.black.cgColor
         flashLayer?.opacity = 0.0
         layer.masksToBounds = true
-        videoPreviewLayer.videoGravity = .resizeAspectFill
+//        videoPreviewLayer.videoGravity = .resizeAspectFill
     }
 
     override class var layerClass: AnyClass {
-        return AVCaptureVideoPreviewLayer.self
+        return CALayer.self
     }
 
     required init?(

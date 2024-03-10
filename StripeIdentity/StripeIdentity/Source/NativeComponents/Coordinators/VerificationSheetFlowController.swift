@@ -627,36 +627,37 @@ extension VerificationSheetFlowController: VerificationSheetFlowControllerProtoc
         staticContent: StripeAPI.VerificationPage,
         sheetController: VerificationSheetControllerProtocol
     ) -> UIViewController {
+        return UIViewController()
         // reinitalize documentUploader with new idDocumentType each time
-        let documentUploader = DocumentUploader(
-            imageUploader: IdentityImageUploader(
-                configuration: .init(from: staticContent.documentCapture),
-                apiClient: sheetController.apiClient,
-                analyticsClient: sheetController.analyticsClient
-            )
-        )
-        self.documentUploader = documentUploader
-
-        switch documentScannerResult {
-        case .failure(let error):
-            sheetController.analyticsClient.logGenericError(error: error)
-
-            // Return document upload screen if we can't load models for auto-capture
-            return DocumentFileUploadViewController(
-                requireLiveCapture: staticContent.documentCapture.requireLiveCapture,
-                sheetController: sheetController,
-                documentUploader: documentUploader
-            )
-
-        case .success(let anyDocumentScanner):
-            return DocumentCaptureViewController(
-                apiConfig: staticContent.documentCapture,
-                sheetController: sheetController,
-                cameraSession: makeDocumentCaptureCameraSession(),
-                documentUploader: documentUploader,
-                anyDocumentScanner: anyDocumentScanner
-            )
-        }
+//        let documentUploader = DocumentUploader(
+//            imageUploader: IdentityImageUploader(
+//                configuration: .init(from: staticContent.documentCapture),
+//                apiClient: sheetController.apiClient,
+//                analyticsClient: sheetController.analyticsClient
+//            )
+//        )
+//        self.documentUploader = documentUploader
+//
+//        switch documentScannerResult {
+//        case .failure(let error):
+//            sheetController.analyticsClient.logGenericError(error: error)
+//
+//            // Return document upload screen if we can't load models for auto-capture
+//            return DocumentFileUploadViewController(
+//                requireLiveCapture: staticContent.documentCapture.requireLiveCapture,
+//                sheetController: sheetController,
+//                documentUploader: documentUploader
+//            )
+//
+//        case .success(let anyDocumentScanner):
+//            return DocumentCaptureViewController(
+//                apiConfig: staticContent.documentCapture,
+//                sheetController: sheetController,
+//                cameraSession: makeDocumentCaptureCameraSession(),
+//                documentUploader: documentUploader,
+//                anyDocumentScanner: anyDocumentScanner
+//            )
+//        }
     }
 
     func makeSelfieCaptureViewController(
@@ -664,40 +665,41 @@ extension VerificationSheetFlowController: VerificationSheetFlowControllerProtoc
         staticContent: StripeAPI.VerificationPage,
         sheetController: VerificationSheetControllerProtocol
     ) -> UIViewController {
-        guard let selfiePageConfig = staticContent.selfie else {
-            return ErrorViewController(
-                sheetController: sheetController,
-                error: .error(
-                    VerificationSheetFlowControllerError.missingSelfieConfig
-                )
-            )
-        }
+        return UIViewController()
+//        guard let selfiePageConfig = staticContent.selfie else {
+//            return ErrorViewController(
+//                sheetController: sheetController,
+//                error: .error(
+//                    VerificationSheetFlowControllerError.missingSelfieConfig
+//                )
+//            )
+//        }
+//
+//        switch faceScannerResult {
+//
+//        case .success(let anyFaceScanner):
+//            return SelfieCaptureViewController(
+//                apiConfig: selfiePageConfig,
+//                sheetController: sheetController,
+//                cameraSession: makeSelfieCaptureCameraSession(),
+//                selfieUploader: SelfieUploader(
+//                    imageUploader: IdentityImageUploader(
+//                        configuration: .init(from: selfiePageConfig),
+//                        apiClient: sheetController.apiClient,
+//                        analyticsClient: sheetController.analyticsClient
+//                    )
+//                ),
+//                anyFaceScanner: anyFaceScanner
+//            )
 
-        switch faceScannerResult {
-
-        case .success(let anyFaceScanner):
-            return SelfieCaptureViewController(
-                apiConfig: selfiePageConfig,
-                sheetController: sheetController,
-                cameraSession: makeSelfieCaptureCameraSession(),
-                selfieUploader: SelfieUploader(
-                    imageUploader: IdentityImageUploader(
-                        configuration: .init(from: selfiePageConfig),
-                        apiClient: sheetController.apiClient,
-                        analyticsClient: sheetController.analyticsClient
-                    )
-                ),
-                anyFaceScanner: anyFaceScanner
-            )
-
-        case .failure(let error):
-            return ErrorViewController(
-                sheetController: sheetController,
-                error: .error(
-                    VerificationSheetFlowControllerError.unknown(error)
-                )
-            )
-        }
+//        case .failure(let error):
+//            return ErrorViewController(
+//                sheetController: sheetController,
+//                error: .error(
+//                    VerificationSheetFlowControllerError.unknown(error)
+//                )
+//            )
+//        }
     }
 
     func makeWebViewController(
@@ -720,7 +722,7 @@ extension VerificationSheetFlowController: VerificationSheetFlowControllerProtoc
         }
 
         let safariVC = SFSafariViewController(url: url)
-        safariVC.delegate = self
+//        safariVC.delegate = self
         return safariVC
     }
 
@@ -731,25 +733,25 @@ extension VerificationSheetFlowController: VerificationSheetFlowControllerProtoc
             sheetController: sheetController)
     }
 
-    private func makeDocumentCaptureCameraSession() -> CameraSessionProtocol {
-        #if targetEnvironment(simulator)
-        return MockSimulatorCameraSession(
-            images: IdentityVerificationSheet.simulatorDocumentCameraImages
-        )
-        #else
-        return CameraSession()
-        #endif
-    }
+//    private func makeDocumentCaptureCameraSession() -> CameraSessionProtocol {
+//        #if targetEnvironment(simulator)
+//        return MockSimulatorCameraSession(
+//            images: IdentityVerificationSheet.simulatorDocumentCameraImages
+//        )
+//        #else
+//        return CameraSession()
+//        #endif
+//    }
 
-    private func makeSelfieCaptureCameraSession() -> CameraSessionProtocol {
-        #if targetEnvironment(simulator)
-        return MockSimulatorCameraSession(
-            images: IdentityVerificationSheet.simulatorSelfieCameraImages
-        )
-        #else
-        return CameraSession()
-        #endif
-    }
+//    private func makeSelfieCaptureCameraSession() -> CameraSessionProtocol {
+//        #if targetEnvironment(simulator)
+//        return MockSimulatorCameraSession(
+//            images: IdentityVerificationSheet.simulatorSelfieCameraImages
+//        )
+//        #else
+//        return CameraSession()
+//        #endif
+//    }
 
     // MARK: - Collected Fields
 
@@ -803,11 +805,11 @@ extension VerificationSheetFlowController: VerificationFlowWebViewControllerDele
 
 // MARK: - SFSafariViewControllerDelegate
 
-extension VerificationSheetFlowController: SFSafariViewControllerDelegate {
-    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
-        delegate?.verificationSheetFlowControllerDidDismissWebView(self)
-    }
-}
+//extension VerificationSheetFlowController: SFSafariViewControllerDelegate {
+//    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+//        delegate?.verificationSheetFlowControllerDidDismissWebView(self)
+//    }
+//}
 
 extension Set<StripeAPI.VerificationPageFieldType> {
     func nextDestination(collectedData: StripeAPI.VerificationPageCollectedData) -> IdentityTopLevelDestination {

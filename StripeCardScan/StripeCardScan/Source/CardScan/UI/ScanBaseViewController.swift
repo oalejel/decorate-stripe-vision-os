@@ -39,14 +39,14 @@ class ScanBaseViewController: UIViewController, AVCaptureVideoDataOutputSampleBu
     private var previewViewFrame: CGRect?
 
     var videoFeed = VideoFeed()
-    var initialVideoOrientation: AVCaptureVideoOrientation {
-        if ScanBaseViewController.isPadAndFormsheet {
-            return AVCaptureVideoOrientation(interfaceOrientation: UIWindow.interfaceOrientation)
-                ?? .portrait
-        } else {
-            return .portrait
-        }
-    }
+//    var initialVideoOrientation: AVCaptureVideoOrientation {
+//        if ScanBaseViewController.isPadAndFormsheet {
+//            return AVCaptureVideoOrientation(interfaceOrientation: UIWindow.interfaceOrientation)
+//                ?? .portrait
+//        } else {
+//            return .portrait
+//        }
+//    }
 
     var scannedCardImage: UIImage?
     private var isNavigationBarHidden: Bool?
@@ -269,7 +269,7 @@ class ScanBaseViewController: UIViewController, AVCaptureVideoDataOutputSampleBu
         ScanBaseViewController.isPadAndFormsheet =
             UIDevice.current.userInterfaceIdiom == .pad && self.modalPresentationStyle == .formSheet
 
-        setNeedsStatusBarAppearanceUpdate()
+//        setNeedsStatusBarAppearanceUpdate()
         regionOfInterestLabel.layer.masksToBounds = true
         regionOfInterestLabel.layer.cornerRadius = self.regionOfInterestCornerRadius
         regionOfInterestLabel.layer.borderColor = UIColor.white.cgColor
@@ -286,29 +286,29 @@ class ScanBaseViewController: UIViewController, AVCaptureVideoDataOutputSampleBu
         }
 
         self.ocrMainLoop()?.mainLoopDelegate = self
-        self.previewView?.videoPreviewLayer.session = self.videoFeed.session
+//        self.previewView?.videoPreviewLayer.session = self.videoFeed.session
 
         self.videoFeed.pauseSession()
         // Apple example app sets up in viewDidLoad: https://developer.apple.com/documentation/avfoundation/cameras_and_media_capture/avcam_building_a_camera_app
-        self.videoFeed.setup(
-            captureDelegate: self,
-            initialVideoOrientation: self.initialVideoOrientation,
-            completion: { success in
-                if self.previewView?.videoPreviewLayer.connection?.isVideoOrientationSupported
-                    ?? false
-                {
-                    self.previewView?.videoPreviewLayer.connection?.videoOrientation =
-                        self.initialVideoOrientation
-                }
-                if let level = torchLevel {
-                    self.setTorchLevel(level: level)
-                }
-
-                if !success && self.testingImageDataSource != nil && self.isSimulator() {
-                    self.startFakeCameraLoop()
-                }
-            }
-        )
+//        self.videoFeed.setup(
+//            captureDelegate: self,
+//            initialVideoOrientation: self.initialVideoOrientation,
+//            completion: { success in
+////                if self.previewView?.videoPreviewLayer.connection?.isVideoOrientationSupported
+////                    ?? false
+////                {
+////                    self.previewView?.videoPreviewLayer.connection?.videoOrientation =
+////                        self.initialVideoOrientation
+////                }
+//                if let level = torchLevel {
+//                    self.setTorchLevel(level: level)
+//                }
+//
+//                if !success && self.testingImageDataSource != nil && self.isSimulator() {
+//                    self.startFakeCameraLoop()
+//                }
+//            }
+//        )
     }
 
     func createOcrMainLoop() -> OcrMainLoop? {
@@ -335,22 +335,22 @@ class ScanBaseViewController: UIViewController, AVCaptureVideoDataOutputSampleBu
         to size: CGSize,
         with coordinator: UIViewControllerTransitionCoordinator
     ) {
-        super.viewWillTransition(to: size, with: coordinator)
-
-        if let videoFeedConnection = self.videoFeed.videoDeviceConnection,
-            videoFeedConnection.isVideoOrientationSupported
-        {
-            videoFeedConnection.videoOrientation =
-                AVCaptureVideoOrientation(deviceOrientation: UIDevice.current.orientation)
-                ?? .portrait
-        }
-        if let previewViewConnection = self.previewView?.videoPreviewLayer.connection,
-            previewViewConnection.isVideoOrientationSupported
-        {
-            previewViewConnection.videoOrientation =
-                AVCaptureVideoOrientation(deviceOrientation: UIDevice.current.orientation)
-                ?? .portrait
-        }
+//        super.viewWillTransition(to: size, with: coordinator)
+//
+//        if let videoFeedConnection = self.videoFeed.videoDeviceConnection,
+////            videoFeedConnection.isVideoOrientationSupported
+//        {
+//            videoFeedConnection.videoOrientation =
+//                AVCaptureVideoOrientation(deviceOrientation: UIDevice.current.orientation)
+//                ?? .portrait
+//        }
+//        if let previewViewConnection = self.previewView?.videoPreviewLayer.connection,
+//            previewViewConnection.isVideoOrientationSupported
+//        {
+//            previewViewConnection.videoOrientation =
+//                AVCaptureVideoOrientation(deviceOrientation: UIDevice.current.orientation)
+//                ?? .portrait
+//        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -431,7 +431,7 @@ class ScanBaseViewController: UIViewController, AVCaptureVideoDataOutputSampleBu
 
         // confirm videoGravity settings in previewView. Calculations based on .resizeAspectFill
         DispatchQueue.main.async {
-            assert(self.previewView?.videoPreviewLayer.videoGravity == .resizeAspectFill)
+//            assert(self.previewView?.videoPreviewLayer.videoGravity == .resizeAspectFill)
         }
 
         guard let roiFrame = self.regionOfInterestLabelFrame,
@@ -473,7 +473,7 @@ class ScanBaseViewController: UIViewController, AVCaptureVideoDataOutputSampleBu
     func complete(creditCardOcrResult: CreditCardOcrResult) {
         ocrMainLoop()?.mainLoopDelegate = nil
         /// Stop the previewing when we are done
-        self.previewView?.videoPreviewLayer.session?.stopRunning()
+//        self.previewView?.videoPreviewLayer.session?.stopRunning()
         /// Log total frames processed
         ScanAnalyticsManager.shared.logMainLoopImageProcessedRepeatingTask(
             .init(executions: self.getScanStats().scans)
